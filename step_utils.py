@@ -38,11 +38,12 @@ def tensorstft2audio(stftdata):
     numpyaudio = tensoraudio.to('cpu').detach().numpy().copy()
     return numpyaudio
     
-def addnoise(speech_stft,noise_stft):
-    addnoise = torch.add(speech_stft,noise_stft)
+def addnoise(speech_stft,noise_stft,noise_snr):
+    nsr_noise_stft = noise_stft * noise_snr
+    addnoise = torch.add(speech_stft,nsr_noise_stft)
     return addnoise
 
-def make_stack(c_files,n_files,audio_len,sample_rate):
+def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr):
     speech_list = []
     speech_noise_list = []
     num_n_files = len(n_files)
@@ -50,7 +51,7 @@ def make_stack(c_files,n_files,audio_len,sample_rate):
         n = n_files[random.randint(0, num_n_files-1)]
         c_stft = wav2tensorstft(c,audio_len,sample_rate)
         n_stft = wav2tensorstft(n,audio_len,sample_rate)
-        c_n_stft = addnoise(c_stft,n_stft)
+        c_n_stft = addnoise(c_stft,n_stft,noise_snr)
         speech_list.append(c_stft)
         speech_noise_list.append(c_n_stft)
 
