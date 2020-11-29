@@ -23,7 +23,7 @@ import step_utils as ut
 audio_len = 2**15 #とりあえず従来通り２秒で
 # audio_len = 2**9 #512フレームでだいたい３ミリ秒
 sample_rate = 16000
-
+noise_snr = 0.7 #0~1で雑音サイズを指定
 # datasets
 clean_speech_dir = "./datasets/CMU_ARCTIC"
 noise_dir = "./datasets/UrbanSound8K"
@@ -58,7 +58,7 @@ def main():
     
     c_files,n_files = c_files[:usedata_num],n_files[:usedata_num]
     
-    tensor_speech,tensor_addnoise = ut.make_stack(c_files,n_files,audio_len,sample_rate)
+    tensor_speech,tensor_addnoise = ut.make_stack(c_files,n_files,audio_len,sample_rate,noise_snr)
     print(tensor_speech.shape,tensor_addnoise.shape)
     torch.save(tensor_speech,datasets_save_dir+"/tensor_speech")
     torch.save(tensor_addnoise,datasets_save_dir+"/tensor_addnoise")
