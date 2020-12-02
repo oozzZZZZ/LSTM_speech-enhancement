@@ -26,8 +26,8 @@ I am currently in the process of fixing this problem.
 1. parameter.py : Setting parameters (Run only once)
 1. step0.py : Processing data sets. (Run only once)
 1. step1.py : Training
-1. step2.ipynb : Listening test data
-1. step3.ipynb : Listening your data
+1. step2.ipynb : Speech enhancement in test data and trained model.
+1. step3.ipynb : Speech enhancement in any wav file and trained model.
 
 ## parameter.py
 
