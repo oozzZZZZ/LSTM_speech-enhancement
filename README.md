@@ -1,9 +1,11 @@
 # LSTM_speech-enhancement
 
-音声強調モデル作成のためのPytorchプログラムです。
+音声強調モデル作成のためのPytorchプログラムです。<br>
+The Pytorch program for speech enhancement.
 
 # 動作環境
 Windows/Mac/Linuxいずれの環境でも動作確認済みです。
+It has been tested in both Windows/Mac/Linux environments.
 
 ```
 Python 3.7.9
