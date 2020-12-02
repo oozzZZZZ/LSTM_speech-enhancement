@@ -23,6 +23,12 @@ I am currently in the process of fixing this problem.
 
 # プログラムについて / How to use
 
+1. parameter.py : パラメーターの設定(一度だけ実行)
+1. step0.py : データセットの前処理を行います。(一度だけ実行)
+1. step1.py : 学習を行う
+1. step2.ipynb : テストデータを使って音声強調を行います。
+1. step3.ipynb : 任意のwavファイルを使って音声強調を行います。
+
 1. parameter.py : Setting parameters (Run only once)
 1. step0.py : Processing data sets. (Run only once)
 1. step1.py : Training
