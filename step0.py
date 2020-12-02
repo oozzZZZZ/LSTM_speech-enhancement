@@ -15,26 +15,21 @@ import random
 import torch
 
 import step_utils as ut
-
-#########################################
-###           parameter               ###
-#########################################
-
-audio_len = 2**15 #とりあえず従来通り２秒で
-# audio_len = 2**9 #512フレームでだいたい３ミリ秒
-sample_rate = 16000
-noise_snr = 0.7 #0~1で雑音サイズを指定
-# datasets
-clean_speech_dir = "./datasets/CMU_ARCTIC"
-noise_dir = "./datasets/UrbanSound8K"
-
-datasets_save_dir = "./datasets"
-
+from parameter import Parameter
 
 def main():
     print("#####################################################################")
     print("Step0 Make Datasets Phase")
     print("#####################################################################")
+    
+    p=Parameter()
+    audio_len = p.audio_len
+    sample_rate = p.sample_rate
+    noise_snr = p.noise_rate 
+    clean_speech_dir = p.target_path
+    noise_dir = p.noise_path
+    datasets_save_dir = p.datasets_path
+    
     
     if not os.path.exists(datasets_save_dir):
         os.mkdir(datasets_save_dir)

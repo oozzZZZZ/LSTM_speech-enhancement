@@ -20,27 +20,21 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 import model as mm
-#########################################
-####           Parameter             ####
-#########################################
-#training parameter
-datasets_save_dir = "./datasets"
-model_save_dir = './model'
-split = [500,2000,12500] #test/val/train
-batch_size = 10
-epochs = 100
-learning_late = 0.002
+from parameter import Parameter
 
-#model parameter
-num_layer = 6
-
-#########################################
-####             Main                ####
-#########################################
 def main():
     print("#####################################################################")
     print("Step1 Training Phase")
     print("#####################################################################")
+    
+    p=Parameter()
+    datasets_save_dir = p.datasets_path
+    model_save_dir = p.model_path
+    split = p.datasets_split
+    batch_size = p.batch_size
+    learning_late = p.learning_late
+    num_layer = p.num_layer
+    
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
@@ -58,7 +52,9 @@ def main():
     tensor_addnoise = torch.load(datasets_save_dir+"/tensor_addnoise")
     
     mydataset = utils.TensorDataset(tensor_speech,tensor_addnoise)
-    test_dataset,val_dataset,train_dataset = utils.random_split(mydataset,split)
+    data_num = tensor_speech.shape[0]
+    data_split = [data_num * split[0],data_num * split[1],data_num * split[2]]
+    test_dataset,val_dataset,train_dataset = utils.random_split(mydataset,data_split)
     
     # Shuffleしない # データローダー：フル
     train_loader = utils.DataLoader(train_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True)
@@ -145,7 +141,7 @@ def main():
         
 
     
-    fig,ax = plt.figure()
+    fig,ax = plt.subplot()
     ax.plot(train_loss_list,linewidth=2, color="red" ,label="Train Loss")
     ax.plot(test_loss_list,linewidth=2, color="blue" ,label="Test Loss")
     ax.legend(loc='upper right')
