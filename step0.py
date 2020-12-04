@@ -130,7 +130,7 @@ def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr,augmentation_mode
                 #データ水増しモードオフ    
                 else:
                     step = len(c_data) // audio_len
-                    for w in range(p.augmentation_num):
+                    for i in range(step):
                         c_p = c_data[i*audio_len : (i+1)*audio_len]
                     
                         c_stft = dataloading_skip(c_p,audio_len)
