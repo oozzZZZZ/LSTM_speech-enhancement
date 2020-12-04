@@ -100,6 +100,7 @@ def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr,augmentation_mode
     for c in tqdm(c_files):
         n = n_files[random.randint(0, num_n_files-1)]
         
+        
         # 音声データが破損してそうな場合スキップしたい
         c_data, _  = librosa.load(c, sr=sample_rate)
         n_data, _  = librosa.load(n, sr=sample_rate)
@@ -108,22 +109,23 @@ def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr,augmentation_mode
         
         #破損データのスキップ
         if len(c_data) > audio_len and len(n_data) > 10:
-                #データ水増しモードオン
-                if augmentation_mode == True:
-                    step = len(c_data) // audio_len
-                    for i in range(step):
-                        for w in range(p.augmentation_num):
-                            c_p = c_data[i*audio_len : (i+1)*audio_len]
-                            c_p = stretch(c_p, rate=random.uniform(0.5, 1.5)) #ランダムデータ伸縮
-                            c_p = pitch_shift(c_p,16000,random.uniform(-12, 12)) #ランダムピッチシフト
-                            c_p = c_p * random.uniform(0.8, 0.8) #ランダム音量変更
-                            
-                            c_stft = dataloading_skip(c_p,audio_len)
-                            n_stft = dataloading_skip(n_data,audio_len)
-                            c_n_stft = addnoise(c_stft,n_stft,noise_snr)
-                            
-                            speech_list.append(c_stft)
-                            speech_noise_list.append(c_n_stft)
+            
+            
+            #データ水増しモードオン
+            if augmentation_mode == True:
+                step = len(c_data) // audio_len
+                
+                for i in range(step):
+                    for w in range(p.augmentation_num):
+                        c_p = c_data[i*audio_len : (i+1)*audio_len]
+                        c_p = stretch(c_p, rate=random.uniform(0.5, 1.5)) #ランダムデータ伸縮
+                        c_p = pitch_shift(c_p,16000,random.uniform(-12, 12)) #ランダムピッチシフト
+                        c_p = c_p * random.uniform(0.8, 0.8) #ランダム音量変更
+                        c_stft = dataloading_skip(c_p,audio_len)
+                        n_stft = dataloading_skip(n_data,audio_len)
+                        c_n_stft = addnoise(c_stft,n_stft,noise_snr)
+                        speech_list.append(c_stft)
+                        speech_noise_list.append(c_n_stft)
                     
                 #データ水増しモードオフ    
                 else:
@@ -155,5 +157,3 @@ def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr,augmentation_mode
     print("Use data :", num_data)
     
     return tensor_speech,tensor_addnoise
-
-
