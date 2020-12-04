@@ -40,21 +40,9 @@ def main():
     random.shuffle(c_files)
     random.shuffle(n_files)
     
-    n = len(c_files)
-    
-    a = round(n, -2)
-    if a > n:  
-        a = round(n-100, -2)
-        
-    usedata_num = a
-    
-    print("\nclean speech data is {} files \nNoise data is {} files  \nUse data = {}"
-          .format(len(c_files),len(n_files),usedata_num))
-    
-    c_files,n_files = c_files[:usedata_num],n_files[:usedata_num]
-    
     tensor_speech,tensor_addnoise = ut.make_stack(c_files,n_files,audio_len,sample_rate,noise_snr)
     print(tensor_speech.shape,tensor_addnoise.shape)
+    
     torch.save(tensor_speech,datasets_save_dir+"/tensor_speech")
     torch.save(tensor_addnoise,datasets_save_dir+"/tensor_addnoise")
     
