@@ -56,10 +56,9 @@ def main():
     data_split = [data_num * split[0],data_num * split[1],data_num * split[2]]
     test_dataset,val_dataset,train_dataset = utils.random_split(mydataset,data_split)
     
-    # Shuffleしない # データローダー：フル
-    train_loader = utils.DataLoader(train_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True)
-    val_loader = utils.DataLoader(val_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True)
-    test_loader = utils.DataLoader(test_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True)
+    train_loader = utils.DataLoader(train_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True,shuffle=True)
+    val_loader = utils.DataLoader(val_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True,shuffle=True)
+    test_loader = utils.DataLoader(test_dataset,batch_size=batch_size,num_workers=os.cpu_count(),pin_memory=True,shuffle=True)
     
     # model
     feat = tensor_addnoise.shape[1]
