@@ -20,14 +20,14 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 import model as mm
-from parameter import Parameter
+import parameter
 
 def main():
     print("#####################################################################")
     print("Step1 Training Phase")
     print("#####################################################################")
     
-    p=Parameter()
+    p=parameter.Parameter()
     datasets_save_dir = p.datasets_path
     model_save_dir = p.model_path
     split = p.datasets_split
