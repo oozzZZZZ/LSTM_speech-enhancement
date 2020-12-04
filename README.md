@@ -61,6 +61,10 @@ num_layer: Specify the number of LSTM layers.
 
 learning_late: learning late
 
+self.augmentation_mode = True
+self.augmentation_num = 4 
+-> Increase the data n times
+
 ```
 
 強調したい音声のみのwavファイルを格納したディレクトリパスを`clean_speech_dir`に、
