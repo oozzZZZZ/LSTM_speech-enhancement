@@ -42,6 +42,10 @@ class Parameter():
         self.batch_size = 50
         self.num_layer = 5 #LSTMレイヤー数
         self.learning_late = 0.002
+        
+        #学習時のデータ水増し処理を行うか
+        self.augmentation_mode = True
+        self.augmentation_num = 4 #何倍に増やす？
     
 if __name__ == '__main__':
     p = Parameter()
