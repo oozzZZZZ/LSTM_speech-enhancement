@@ -34,6 +34,7 @@ def main():
     batch_size = p.batch_size
     learning_late = p.learning_late
     num_layer = p.num_layer
+    epochs = p.epochs
     
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
