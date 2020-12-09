@@ -38,6 +38,7 @@ class Parameter():
         """
         学習に関するパラメータ
         """
+        
         self.datasets_split = [0.1,0.2,0.7] #test/val/train
         self.batch_size = 50
         self.num_layer = 5 #LSTMレイヤー数
