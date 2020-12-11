@@ -71,9 +71,12 @@ def mk_reverb_ir(ir_len=1, rt=1, fs=16000, init_rev=True):
 
 def conv_reverb(data,sample_rate,rt):
     
-    reverb = mk_reverb_ir(ir_len=rt, rt=rt, fs=sample_rate)
-    data_reverb = fftconvolve(data, reverb)
-    
+    if rt>0:
+        reverb = mk_reverb_ir(ir_len=rt, rt=rt, fs=sample_rate)
+        data_reverb = fftconvolve(data, reverb)
+    else:
+        data_reverb = data
+        
     return data_reverb
 
 def length_fitting(data,audio_len):
