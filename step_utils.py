@@ -12,6 +12,7 @@ import random
 import os
 import glob
 import parameter
+from scipy.signal import fftconvolve
 p=parameter.Parameter()
 
 def take_path(path):
@@ -67,6 +68,13 @@ def mk_reverb_ir(ir_len=1, rt=1, fs=16000, init_rev=True):
         reverb[:int(0.1*fs)] *= rand_init_reverb
     
     return reverb
+
+def conv_reverb(data,sample_rate,rt):
+    
+    reverb = mk_reverb_ir(ir_len=rt, rt=rt, fs=sample_rate)
+    data_reverb = fftconvolve(data, reverb)
+    
+    return data_reverb
 
 def length_fitting(data,audio_len):
     if len(data) > audio_len:
