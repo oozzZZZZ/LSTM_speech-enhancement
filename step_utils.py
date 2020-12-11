@@ -147,6 +147,7 @@ def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr,augmentation_mode
                         c_p = c_data[i*audio_len : (i+1)*audio_len]
                         c_p = stretch(c_p, rate=random.uniform(0.5, 1.5)) #ランダムデータ伸縮
                         c_p = pitch_shift(c_p,16000,random.uniform(-12, 12)) #ランダムピッチシフト
+                        c_p = conv_reverb(c_p, 16000, random.uniform(0, 1.0))
                         c_p = c_p * random.uniform(0.8, 1.2) #ランダム音量変更
                         c_stft = dataloading_skip(c_p,audio_len)
                         n_stft = dataloading_skip(n_data,audio_len)
