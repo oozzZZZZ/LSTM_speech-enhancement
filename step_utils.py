@@ -51,13 +51,14 @@ def pitch_shift(data,sample_rate,shift):
 
 def mk_reverb_ir(ir_len=1, rt=1, fs=16000, init_rev=True):
     
-    t = np.linspace(0, ir_len, ir_len*fs)
+    t = np.linspace(0, ir_len, int(ir_len*fs))
     E = np.power(10, -3 * t / rt)
     
     reverb = np.power(E, 2/3)
     rand = np.random.randint(0, 2, reverb.size)
     rand = np.where(rand==1, 1, -1)
     reverb *= rand
+
     
     if init_rev:
         t = np.linspace(0, 0.1, int(fs*0.1))
@@ -65,6 +66,8 @@ def mk_reverb_ir(ir_len=1, rt=1, fs=16000, init_rev=True):
         density = 8 * t + 0.2
         rand_density = density - rand_t
         rand_init_reverb = np.where(rand_density>0, 1, 0)
+        if ir_len < 0.1:
+            rand_init_reverb = rand_init_reverb[:int(ir_len*fs)]
         reverb[:int(0.1*fs)] *= rand_init_reverb
     
     return reverb
