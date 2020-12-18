@@ -12,6 +12,7 @@ import random
 import os
 import glob
 import parameter
+from scipy.signal import fftconvolve
 p=parameter.Parameter()
 
 def take_path(path):
@@ -47,6 +48,39 @@ def pitch_shift(data,sample_rate,shift):
     """
     ret = librosa.effects.pitch_shift(data, sample_rate, shift, bins_per_octave=12, res_type='kaiser_best')
     return ret
+
+def mk_reverb_ir(ir_len=1, rt=1, fs=16000, init_rev=True):
+    
+    t = np.linspace(0, ir_len, int(ir_len*fs))
+    E = np.power(10, -3 * t / rt)
+    
+    reverb = np.power(E, 2/3)
+    rand = np.random.randint(0, 2, reverb.size)
+    rand = np.where(rand==1, 1, -1)
+    reverb *= rand
+
+    
+    if init_rev:
+        t = np.linspace(0, 0.1, int(fs*0.1))
+        rand_t = np.random.rand(t.size)
+        density = 8 * t + 0.2
+        rand_density = density - rand_t
+        rand_init_reverb = np.where(rand_density>0, 1, 0)
+        if ir_len < 0.1:
+            rand_init_reverb = rand_init_reverb[:int(ir_len*fs)]
+        reverb[:int(0.1*fs)] *= rand_init_reverb
+    
+    return reverb
+
+def conv_reverb(data,sample_rate,rt):
+    
+    if rt>0:
+        reverb = mk_reverb_ir(ir_len=rt, rt=rt, fs=sample_rate)
+        data_reverb = fftconvolve(data, reverb)
+    else:
+        data_reverb = data
+        
+    return data_reverb
 
 def length_fitting(data,audio_len):
     if len(data) > audio_len:
@@ -119,6 +153,7 @@ def make_stack(c_files,n_files,audio_len,sample_rate,noise_snr,augmentation_mode
                         c_p = c_data[i*audio_len : (i+1)*audio_len]
                         c_p = stretch(c_p, rate=random.uniform(0.5, 1.5)) #ランダムデータ伸縮
                         c_p = pitch_shift(c_p,16000,random.uniform(-12, 12)) #ランダムピッチシフト
+                        c_p = conv_reverb(c_p, 16000, random.uniform(0, 1.0))
                         c_p = c_p * random.uniform(0.8, 1.2) #ランダム音量変更
                         c_stft = dataloading_skip(c_p,audio_len)
                         n_stft = dataloading_skip(n_data,audio_len)
