@@ -102,7 +102,7 @@ def main():
     train_loss_list = []
     test_loss_list = []
     
-    for epoch in tqdm(range(1, epochs+1),desc='[Training..]'):
+    for epoch in tqdm(range(1, epochs+1),desc='[Training..]',leave=True):
     
     
         # Training
