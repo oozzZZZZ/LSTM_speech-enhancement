@@ -51,7 +51,7 @@ def main():
     speech_list = []
     addnoise_list = []
     
-    print("load npz data and transform stacked tensor")
+    print("load npz data and transform it stacked tensor...")
     
     for file in tqdm(_datasets_path):
         d = np.load(file)    
