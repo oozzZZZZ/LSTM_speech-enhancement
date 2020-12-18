@@ -36,8 +36,8 @@ class Parameter():
         
         self.noise_rate = 0.7 #付加されるノイズの大きさ(0.0~1.0)
         
-        self.fft_size = 2**10
-        self.hop_length = 2**9
+        self.fft_size = 2**9
+        self.hop_length = 2**8
         
         """
         学習に関するパラメータ
