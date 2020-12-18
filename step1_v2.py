@@ -51,6 +51,8 @@ def main():
     speech_list = []
     addnoise_list = []
     
+    print("load npz data and transform stacked tensor")
+    
     for file in tqdm(_datasets_path):
         d = np.load(file)    
         speech=torch.from_numpy(d["speech"].astype(np.float32)).clone()
