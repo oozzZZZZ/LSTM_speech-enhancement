@@ -61,9 +61,8 @@ def main():
         return data
     
     data_idx = 0
-    data_p_idx = 0
-    
     for c in tqdm(c_files,leave=True):
+        data_p_idx = 0
         c_data, sr_c = load(c, sr=None)
         
         if sr_c != sample_rate:
