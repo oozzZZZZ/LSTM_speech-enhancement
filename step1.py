@@ -64,6 +64,8 @@ def main():
     a = round(num_data, -2)
     if a > num_data:  
         num_usedata = round(num_data-100, -2)
+    else:
+        num_usedata=a
         
     tensor_speech = torch.stack(speech_list[:num_usedata])
     tensor_addnoise = torch.stack(addnoise_list[:num_usedata])
