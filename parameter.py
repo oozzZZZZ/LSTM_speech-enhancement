@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Nov 28 18:51:05 2020
-
 @author: yamamoto
-
 パラメーター関連
 """
 
@@ -20,8 +18,11 @@ class Parameter():
         model_path:学習されたモデルを保存します
         ->ディレクトリがない場合自動生成されます。
         """
-        self.target_path = "./datasets/CMU_ARCTIC"
-        self.noise_path = "./datasets/UrbanSound8K"
+#         self.target_path = "./datasets/CMU_ARCTIC"
+#         self.noise_path = "./datasets/UrbanSound8K"
+        
+        self.target_path = "/disk107/DATA/CSJ_RAW/WAV/WAV"
+        self.noise_path = "/disk107/Datasets/UrbanSound8K"
 
         self.datasets_path = "./datasets"
 
@@ -34,6 +35,9 @@ class Parameter():
         self.sample_rate = 16000
         
         self.noise_rate = 0.7 #付加されるノイズの大きさ(0.0~1.0)
+        
+        self.fft_size = 2**10
+        self.hop_length = 2**9
         
         """
         学習に関するパラメータ
