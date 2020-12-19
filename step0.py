@@ -16,8 +16,6 @@ from librosa.core import load, stft
 import utils as ut
 import parameter
 
-import sys
-
 # pram
 
 p=parameter.Parameter()
@@ -33,23 +31,15 @@ hop_length = p.hop_length
 
 def main():
 
-    if not os.path.exists(datasets_save_dir):
-        os.mkdir(datasets_save_dir)
-    else:
-        print("[ALERT]")
-        print("  ディレクトリ",datasets_save_dir,"はすでに存在します。")
-        print("  parameter.pyから生成されるデータセットの保存先を変更するか、作成済みのSTFTデータを削除されることをおすすめします。")
-        print("  (このまま実行する場合､いくつかのデータが重複します｡)")
+    massage ="[ALERT]ディレクトリ"+datasets_save_dir+"はすでに存在します。"
+    massage+="\nparameter.pyから生成されるデータセットの保存先を変更するか、作成済みのSTFTデータを削除されることをおすすめします。"
+    massage+="\n(このまま実行する場合､いくつかのデータが重複します｡)"
+    massage+="\nこのまま実行しますか?"
 
-
-        choice = input("\nこのまま実行しますか?[y/N]: ").lower()
-        if choice in ['y', 'ye', 'yes']:
-            print("Start Converting Datasets")
-        elif choice in ['n', 'no', 'N']:
-            sys.exit()       
+    ut.dir_yesno(datasets_save_dir,massage)
         
-    c_files = ut.take_path(clean_speech_dir)
-    n_files = ut.take_path(noise_dir)
+    c_files = ut.take_filepath(clean_speech_dir,keyword="*.wav")
+    n_files = ut.take_filepath(noise_dir,keyword="*.wav")
     
     random.shuffle(c_files)
     random.shuffle(n_files)

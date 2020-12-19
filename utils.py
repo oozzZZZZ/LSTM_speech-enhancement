@@ -12,6 +12,99 @@ import os
 import glob
 import parameter
 p=parameter.Parameter()
+import sys
+import shutil
+
+def dir_yesno(dir_path,massage):
+    """
+    directoryをユーザーの応答次第で削除し再作成します。
+
+    Parameters
+    ----------
+    dir_path : str
+        削除、再作成を行う対象のディレクトリパス
+    massage : str
+        例:
+            massage ="[ALERT]ディレクトリ"+dir_path+"はすでに存在します。"
+            massage+="\nparameter.pyから生成されるデータセットの保存先を変更するか、作成済みのSTFTデータを削除されることをおすすめします。"
+            massage+="\n(このまま実行する場合､いくつかのデータが重複します｡)"
+            massage+="\nこのまま実行しますか?"
+
+    Returns
+    -------
+    None.
+
+    """
+    if not os.path.exists(dir_path):
+        os.mkdir(dir_path)
+    else:
+        choice = input(massage+"[y/N]:").lower()
+        if choice in ['y', 'ye', 'yes']:
+            print("このまま実行します。")
+        elif choice in ['n', 'no', 'N']:
+            choice = input("\nファイルとディレクトリを削除し、実行しますか？[y/N]: ").lower()
+            if choice in ['y', 'ye', 'yes']:
+                print("削除しています...")
+                shutil.rmtree(dir_path)
+                if not os.path.exists(dir_path):
+                    print("ディレクトリを削除できました。")
+                else:
+                    print("削除できませんでした。プログラムを終了します。")
+                    sys.exit()
+                os.mkdir(dir_path)
+            elif choice in ['n', 'no', 'N']:    
+                print("プログラムを終了します。")
+                sys.exit()
+            
+def take_filepath(path,keyword = "*.wav"):
+    """
+    Parameters
+    ----------
+    path : str
+        directory path
+        指定ディレクトリ下の特定のファイルパスを探索します
+    keyword : str, optional
+       探索したいファイルの拡張子を指定。
+       例:
+           "*.wav"
+           "directry/*.pt"
+           
+       The default is "*.wav".
+
+    Returns
+    -------
+    data_list : list
+        探索されたファイルパスのリストを返します。
+
+    """
+    if isinstance(path, str):
+        data_list = []
+        for a,b,c in os.walk(path):
+            l = glob.glob(a+"/"+keyword ,recursive=True)
+            data_list = data_list + l
+        
+    if isinstance(path, list):
+        data_list = []
+        for i in path:
+            for a,b,c in os.walk(path):
+                l = glob.glob(a+keyword ,recursive=True)
+                data_list = data_list + l            
+    return data_list
+            
+def take_wavpath(path):
+    if isinstance(path, str):
+        data_list = []
+        for a,b,c in os.walk(path):
+            l = glob.glob(a+"/*.wav" ,recursive=True)
+            data_list = data_list + l
+        
+    if isinstance(path, list):
+        data_list = []
+        for i in path:
+            for a,b,c in os.walk(path):
+                l = glob.glob(a+"/*.wav" ,recursive=True)
+                data_list = data_list + l            
+    return data_list
 
 def take_path(path):
     if isinstance(path, str):
@@ -26,7 +119,14 @@ def take_path(path):
             for a,b,c in os.walk(path):
                 l = glob.glob(a+"/*.wav" ,recursive=True)
                 data_list = data_list + l            
-    return data_list   
+    return data_list
+
+def take_path_pt(path):
+    data_list = []
+    for a,b,c in os.walk(path):
+        l = glob.glob(a+"/*.pt" ,recursive=True)
+        data_list = data_list + l
+    return data_list
 
 # data augumentation tools
 
