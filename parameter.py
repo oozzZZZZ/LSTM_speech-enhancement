@@ -18,15 +18,15 @@ class Parameter():
         model_path:学習されたモデルを保存します
         ->ディレクトリがない場合自動生成されます。
         """
-#         self.target_path = "./datasets/CMU_ARCTIC"
-#         self.noise_path = "./datasets/UrbanSound8K"
+        self.target_path = "D:/yamamoto/target"
+        self.noise_path = "D:/yamamoto/noise"
         
-        self.target_path = "/disk107/DATA/CSJ_RAW/WAV/WAV"
-        self.noise_path = "/disk107/Datasets/UrbanSound8K"
+#         self.target_path = "/disk107/DATA/CSJ_RAW/WAV/WAV"
+#         self.noise_path = "/disk107/Datasets/UrbanSound8K"
 
-        self.datasets_path = "./datasets"
+        self.datasets_path = "D:/yamamoto/stftset"
 
-        self.model_path = "./model/"
+        self.model_path = "D:/yamamoto/modeldir/"
         
         """
         音声データに関するパラメータ
@@ -44,9 +44,10 @@ class Parameter():
         """
         
         self.datasets_split = [0.1,0.2,0.7] #test/val/train
-        self.batch_size = 50
+        self.batch_size = 30
         self.num_layer = 5 #LSTMレイヤー数
         self.learning_late = 0.002
+        self.epochs = 30
         
         #学習時のデータ水増し処理を行うか
         self.augmentation_mode = True

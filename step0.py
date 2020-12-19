@@ -16,6 +16,8 @@ from librosa.core import load, stft
 import utils as ut
 import parameter
 
+# pram
+
 p=parameter.Parameter()
 
 audio_len = p.audio_len
@@ -52,16 +54,9 @@ def main():
     print("\nclean speech data is {} files \nNoise data is {} files"
               .format(num_c_files,num_n_files)) 
     
-    def length_fitting(data,audio_len):
-        if len(data) > audio_len:
-            data = data[:audio_len]
-        else: 
-            while len(data) < audio_len:
-                data = np.concatenate((data,data),0)[:audio_len]
-        return data
     
     data_idx = 0
-    for c in tqdm(c_files,leave=True):
+    for c in tqdm(c_files,leave=True,desc='[Processing..]'):
         data_p_idx = 0
         c_data, sr_c = load(c, sr=None)
         
@@ -70,33 +65,36 @@ def main():
             
         skip_count = 0
         
+        ##########################
+        ## augumentation入れるならここ
+        ##########################
+        
         if len(c_data) < audio_len:
             skip_count += 1
             
         else:
             step = len(c_data) // audio_len
             
-            for i in tqdm(range(step),leave=False):
+            for i in tqdm(range(step),leave=False,desc='[AUDIO Process..]'):
                 c_p = c_data[i*audio_len : (i+1)*audio_len]
-                
+ 
                 n = n_files[random.randint(0, num_n_files-1)]
                 n_data, sr_n = load(n, sr=None)
                 if sr_n != sample_rate:
                     n_data, _ = load(n, sr=sample_rate)
                 n_data = length_fitting(n_data,audio_len)
                 
+                c_p_stft=stft(c_p, n_fft=fft_size, hop_length=hop_length)
+                n_p_stft=stft(n_data, n_fft=fft_size, hop_length=hop_length)
+                addnoise_stft=c_p_stft+n_p_stft
                 
-                c_p = np.abs(stft(c_p, n_fft=fft_size, hop_length=hop_length)).astype(np.float32)
-                n_data = np.abs(stft(n_data, n_fft=fft_size, hop_length=hop_length)).astype(np.float32)
-                c_n_data = c_p + n_data
-                norm = c_p.max()
-    
-                c_p /= norm
-                n_data /= norm
-                c_n_data /= norm
-                
+                norm = c_p_stft.max()
+                c_p_stft /= norm
+                n_p_stft /= norm
+                addnoise_stft /= norm                
+                                
                 np.savez(os.path.join(datasets_save_dir, str(data_idx)+"_"+str(data_p_idx)+".npz"),
-                         speech=c_p, addnoise=c_n_data)
+                         speech=c_p_stft, addnoise=addnoise_stft)
                 
                 data_p_idx += 1
     
