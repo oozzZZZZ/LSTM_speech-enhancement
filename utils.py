@@ -14,11 +14,19 @@ import parameter
 p=parameter.Parameter()
 
 def take_path(path):
-    data_list = []
-    for a,b,c in os.walk(path):
-        l = glob.glob(a+"/*.wav" ,recursive=True)
-        data_list = data_list + l
-    return data_list
+    if isinstance(path, str):
+        data_list = []
+        for a,b,c in os.walk(path):
+            l = glob.glob(a+"/*.wav" ,recursive=True)
+            data_list = data_list + l
+        
+    if isinstance(path, list):
+        data_list = []
+        for i in path:
+            for a,b,c in os.walk(path):
+                l = glob.glob(a+"/*.wav" ,recursive=True)
+                data_list = data_list + l            
+    return data_list   
 
 # data augumentation tools
 
