@@ -16,6 +16,8 @@ from librosa.core import load, stft
 import utils as ut
 import parameter
 
+import sys
+
 # pram
 
 p=parameter.Parameter()
@@ -33,6 +35,18 @@ def main():
 
     if not os.path.exists(datasets_save_dir):
         os.mkdir(datasets_save_dir)
+    else:
+        print("[ALERT]")
+        print("  ディレクトリ",datasets_save_dir,"はすでに存在します。")
+        print("  parameter.pyから生成されるデータセットの保存先を変更するか、作成済みのSTFTデータを削除されることをおすすめします。")
+        print("  (このまま実行する場合､いくつかのデータが重複します｡)")
+
+
+        choice = input("\nこのまま実行しますか?[y/N]: ").lower()
+        if choice in ['y', 'ye', 'yes']:
+            print("Start Converting Datasets")
+        elif choice in ['n', 'no', 'N']:
+            sys.exit()       
         
     c_files = ut.take_path(clean_speech_dir)
     n_files = ut.take_path(noise_dir)
