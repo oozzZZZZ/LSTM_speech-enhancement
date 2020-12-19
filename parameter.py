@@ -18,7 +18,7 @@ class Parameter():
         model_path:学習されたモデルを保存します
         ->ディレクトリがない場合自動生成されます。
         """
-        self.target_path = "D:/yamamoto/target"
+        self.target_path = "D:/yamamoto/target" #直接パスを渡すか、パスをリストにまとめたものを置いてください。
         self.noise_path = "D:/yamamoto/noise"
         
 #         self.target_path = "/disk107/DATA/CSJ_RAW/WAV/WAV"
