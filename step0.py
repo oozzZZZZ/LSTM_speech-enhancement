@@ -29,14 +29,6 @@ datasets_save_dir = p.datasets_path
 fft_size = p.fft_size
 hop_length = p.hop_length
 
-def length_fitting(data,audio_len):
-    if len(data) > audio_len:
-        data = data[:audio_len]
-    else: 
-        while len(data) < audio_len:
-            data = np.concatenate((data,data),0)[:audio_len]
-    return data
-
 def main():
 
     if not os.path.exists(datasets_save_dir):
@@ -82,7 +74,7 @@ def main():
                 n_data, sr_n = load(n, sr=None)
                 if sr_n != sample_rate:
                     n_data, _ = load(n, sr=sample_rate)
-                n_data = length_fitting(n_data,audio_len)
+                n_data = ut.length_fitting(n_data,audio_len)
                 
                 c_p_stft=stft(c_p, n_fft=fft_size, hop_length=hop_length)
                 n_p_stft=stft(n_data, n_fft=fft_size, hop_length=hop_length)

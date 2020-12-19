@@ -55,12 +55,20 @@ def pitch_shift(data,sample_rate,shift):
     ret = librosa.effects.pitch_shift(data, sample_rate, shift, bins_per_octave=12, res_type='kaiser_best')
     return ret
 
+# def length_fitting(data,audio_len):
+#     if len(data) > audio_len:
+#         data = data[:audio_len]
+#     else: 
+#         while len(data) < audio_len:
+#             data = torch.cat((data,data),0)[:audio_len]
+#     return data
+
 def length_fitting(data,audio_len):
     if len(data) > audio_len:
         data = data[:audio_len]
     else: 
         while len(data) < audio_len:
-            data = torch.cat((data,data),0)[:audio_len]
+            data = np.concatenate((data,data),0)[:audio_len]
     return data
     
 def wav2tensorstft(filename,audio_len,sample_rate):
