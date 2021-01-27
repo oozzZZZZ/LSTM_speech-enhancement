@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 import model as mm
 import parameter
 
+
 def main():
     print("#####################################################################")
     print("Step1 Training Phase")
